@@ -1219,12 +1219,12 @@ input[type="radio"] + label:before {
   .image img {
     border-radius: 0.375em;
     display: block; }
-  .image.circular--square { 
-    border-radius: 50%; }
   .image.left, .image.right {
     max-width: 40%; }
     .image.left img, .image.right img {
       width: 100%; }
+    .image.circular--square { 
+       border-radius: 50%; }
   .image.left {
     float: left;
     padding: 0 1.5em 1em 0;
