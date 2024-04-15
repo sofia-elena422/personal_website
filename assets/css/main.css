@@ -33,6 +33,7 @@ figure {
   padding: 4px;
   margin: auto;
   border: thin silver solid;
+  text-align:center;
 }
   
 figcaption {
