@@ -46,56 +46,46 @@
 									<h4>1.2 Objectives</h4>
 									<p>The objectives for my contribution were: (1) assisting a graduate student, Zihao Zhang, with collecting water samples and analyzing sensor data and system performance; and (2) leading the development of the IoT system, and sensor control system which will enable weather forecasts to control automated and pro-active preparation for high-discharge storm events (e.g., draining the reactor before storms to increase storage volume of storm water). </p>
 									<p>The longterm goals for my contribution to this project is to help enable the system shown in Figure 2. This shows the sensor network connected to the Arduino controller with IoT weather feedback and carbon pumping capabilities.</p>
-									<div class="gallery">
-										<a target="_blank" href="images/woodchip.jpg">
-										  <img src="images/woodchip.jpg" alt="">
-										</a>
-										<div class="desc"><b>Figure 2: Longterm Objectives Visual</div>
-									</div>
+									<figure>
+										<img src="images/woodchip.jpg" alt="" />
+										<figcaption>Figure 2:Longterm objectives visual</figcaption>
+									</figure>
 									<p>For the first set of tasks, I will be continuing my work from the spring semester in testing, calibrating, and deploying the sensors, and controllable valves as a retrofit to the woodchip bioreactor at Cornell’s Thompson Vegetable Farm. The bioreactor retrofit was fully installed by May 1st so my summer responsibilities included taking water samplings from the site, analyzing data, troubleshooting any issues we have with the equipment and developing the sensor network to be compatible with the Arduino microcontroller. I facilitated the testing and transition from the Campbell Scientific datalogger to the cheaper and more accessible Arduino microcontroller. In addition, I will be leading the development and implementation of the IoT technology that will act as a communication network between the weather forecasting machines at Cornell and the bioreactor. Below, Figure 3 demonstrates the progression of activities. For this paper, I completed every section other than the final replacement of the Campbell data logger with the Arduino system. </p>
-									<div class="gallery">
-										<a target="_blank" href="images/flow_chart.png">
-										  <img src="images/flow_chart.png" alt="">
-										</a>
-										<div class="desc"><b>Figure 3: Objectives Flow Chart</div>
-									</div>
+									<figure>
+										<img src="images/flow_chart.png" alt="" />
+										<figcaption>Figure 3: Objectives flow chart</figcaption>
+									</figure>
+									
 									<h3>2. Materials and Methods</h3>
 									<p>The first objective was to successfully install the Campbell Datalogger supported system. The figure below shows all of the components of this installation process. </p>
-									<div class="gallery">
-										<a target="_blank" href="images/complete_system.png">
-										  <img src="images/complete_system.png" alt="">
-										</a>
-										<div class="desc"><b>Figure 4: Complete System</div>
-									</div>
+									<figure>
+										<img src="images/complete_system.png" alt="" />
+										<figcaption>Figure 4: Complete system</figcaption>
+									</figure>
 									<h4>2.1 Initial Sensor Installation</h4>
 									<p>The first step was to install the Campbell Scientific CR1000X datalogger. This datalogger would connect the sensors and save the data in one file. To communicate with the datalogger and sensors, we utilized Loggernet software that would collect data every 10 minutes. To power the Campbell datalogger and sensors, we installed a solar panel and 12V battery onto the structure.</p>
 									<p>Next, we installed the SDI-12 sensors. SDI-12 is an environmental sensor communication protocol that is different from typical digital or analog sensors. The water level sensors, redox sensor and nitrate sensor all used this protocol. We installed a water level sensor in the inlet and outlet of the bioreactor. The inlet and outlet channels are open structures in the beginning and end of the bioreactor that we could place sensors to get an estimate of the conditions of the water before and after going through the bioreactor. The redox sensor monitors the amount of bromide in the bioreactor. It was installed vertically in a PVC pipe in the center of the bioreactor. When we would pump acetate through the bioreactor, we included bromide as an indicator of how well the bacteria was utilizing and breaking down the additional carbon source to break down nitrate. The last SDI-12 sensor we installed was the nitrate sensor. We installed this sensor in the outlet structure. This sensor detected the nitrate levels of the water leaving the bioreactor. </p>
 									<p>After those installations, we installed the analog dissolved oxygen sensors. We installed one sensor in the beginning of the bioreactor and one at the end of the bioreactor. This sensor measured oxygen levels to see how well the bacteria was breaking down nitrate. When the microbes break down nitrate into nitrogen gas, they release oxygen which was measured by the oxygen sensor. </p>
 									<p>To gain a better understanding of the nitrate levels moving through the bioreactor, we installed the ISSCO water samplers in the inlet and outlet of the bioreactor. These machines take samples from the bioreactor every 6 hours which we analyzed to determine the amount of nitrate going into and leaving the bioreactor. </p>
 									<p>Lastly, we installed the carbon pumping system to make it feasible to pump acetate into the inlet portion of the bioreactor. For this system, we installed 6 peristaltic 12V DC pumps and utilized 3 Pololu motor drivers to regulate the pumping.  The Pololu motor drivers were able to drive the 5V signal into a 12V signal to power the pumps. This made it feasible to conduct a proof of concept experiment to prove that pumping carbon into the bioreactor would result in an increased breakdown of nitrate. </p>
-									<div class="gallery">
-										<a target="_blank" href="images/overhead_view.png">
-										  <img src="images/overhead_view.png" alt="">
-										</a>
-										<div class="desc"><b>Figure 5: Overhead View of Initial Sensor Installation</div>
-									</div>
+									<figure>
+										<img src="images/overhead_view.png" alt="" />
+										<figcaption>Figure 5: Overhead view of initial sensor installation</figcaption>
+									</figure>
 
 									<h4>2.2 Campbell Scientific IoT Installation</h4>
 									<p>To add an IoT component to the datalogger, I utilized the Cell200-4G LTE cellular module by Campbell Scientific. To connect this device to the module, I installed an omni-directional antenna to the outside of the storage box. Then, I wired the Cell200 module to the Campbell Scientific datalogger and utilized the online Konect pakbus router to send the Loggernet program to the cell module and then to the datalogger. Utilizing this setup, we could send new programs to the datalogger and save data from the datalogger. The diagram below shows a visual of the connection between all the components. </p>
-									<div class="gallery">
-										<a target="_blank" href="images/iot_datalogger.png">
-										  <img src="images/iot_datalogger.png" alt="">
-										</a>
-										<div class="desc"><b>Figure 6: Campbell Datalogger IoT Connections</div>
-									</div>
+									<figure>
+										<img src="images/iot_datalogger.png" alt="" />
+										<figcaption>Figure 6: Campbell datalogger IoT connections</figcaption>
+									</figure>
 									<h4>2.3 Arduino Bench Testing</h4>
 									<p>The Arduino bench testing was an important step to test the individual components needed to migrate to the Arduino datalogging system in the lab. The figure below shows one of the final iterations of the bench testing that tested an SDI-12 sensor, temperature (digital) sensor, real-time clock and sd card. In addition, I completed a test of the analog oxygen sensors. </p>
-									<div class="gallery">
-										<a target="_blank" href="images/wiring.jpg">
-										  <img src="images/wiring.jpg" alt="">
-										</a>
-										<div class="desc"><b>Figure 7: Illustration of Arduino wiring for lab testing</div>
-									</div>
+									<figure>
+										<img src="images/wiring.jpg" alt="" />
+										<figcaption>Figure 7: Illustration of Arduino wiring for lab setting</figcaption>
+									</figure>
+								
 									<p><i>2.3.1 Real-Time Clock</i></p>
 									<p>For the real-time clock, I did a system analysis of different programs to see which would take up the smallest amount of storage since the real-time clock is a large use of the Arduino storage. The purpose of focusing on reducing the storage use is that there can be large errors in C++ if your SRAM storage overfills. SRAM is the static random access memory where the sketch creates and manipulates variables when it is running. If this fills up (especially with String variables), it can cause the Arduino to crash or have errors that are difficult to debug. I utilized a program in each of them that would print the unused SRAM, program storage and dynamic memory used. The program that I chose had 957/2560 bytes of unused SRAM, 65% of program storage used, and 57% of dynamic memory used with the Pololu A-Star 32U4 microcontroller. </p>
 									<p><i>2.3.2 Memory Storage</i></p>
@@ -105,29 +95,26 @@
 									<p>For the SDI-12 connection, I utilized the open-source library for SDI-12 sensors (Damiano). The open-source library was helpful to utilize the build-in SDI-12 specific functions but I had to rewrite the code to utilize that with the real-time clock, sd card and other sensors. In addition, I edited it to not have any Strings as mentioned above.</p>
 									<p><i>2.3.4 Analog Sensor Connection</i></p>
 									<p>For the analog sensor connection (Oxygen sensor), I utilized a boost converter chip. The oxygen sensor had an output of  33 mV +/- 9 mV when fully saturated and less than 2 mV when there was zero saturation. I needed the boost converter chip because the oxygen sensor’s output values were too small for the Arduino to read. The oxygen sensor wiring utilized a differential input wiring so the diagram below demonstrates how I connected it. Then, I calibrated it with the zero knob and then zoomed in until I was getting outputs that were out of 1023 bins. </p>
-									<div class="gallery">
-										<a target="_blank" href="images/diff_wiring.jpg">
-										  <img src="images/diff_wiring.jpg" alt="">
-										</a>
-										<div class="desc"><b>Figure 8: Differential Wiring Diagram for Boost Converter Chip (from Teyleten Robot)</div>
-									</div>
+									<figure>
+										<img src="images/diff_wiring.jpg" alt="" />
+										<figcaption>Figure 8: Differential wiring diagram for boost converter chip (from Teyleten Robot)</figcaption>
+									</figure>
+								
 									<p><i>Miscellaneous Lessons Learned</i></p>
 									<p>One of the main issues I ran into was that boards would stop working randomly. Once it happened a couple times, I investigated further. Since I was using a Pololu A-Star 32U4 for my initial testing, I found that if I was using a 12V input I needed to connect it to a separate component where it says :Power in” seen in the figure below instead of the pink Vin switch. </p>
-									<div class="gallery">
-										<a target="_blank" href="images/polulu.png">
-										  <img src="images/polulu.png" alt="">
-										</a>
-										<div class="desc"><b>Figure 9: Polulu A-star 32U4 Diagram</div>
-									</div>
+									<figure>
+										<img src="images/complete_system.png" alt="" />
+										<figcaption>Figure 9: Polulu A-star 32U4 Diagram</figcaption>
+									</figure>
+									
 									<p>I installed a screw-in terminal to connect the battery in the power in port. In addition, I localized the issue to frying the Texas Instruments Autoswitching power mux (TPS2112A). This mux helps regulate and choose what power supply to utilize between the USB cable and battery. Our theory was that when the Pololu was connected to both the USB cable and battery and there was a power surge on either of the sources, it would break that mux and fry the board. In addition, if the power regulator within the Texas Instruments chip gets fried because the input of 2.8V to 5.5V gets pushed to GND it would break this important chip and make the Pololu unable to send a program over the USB when connected to the battery and USB. To prevent this from happening again, I changed the setup to a male-female connector cord that could be unpluged when making changes to the device configuration to reduce overpowering the board.</p>
 									<h3>3. Results</h3>
 									<p>Figure 10 demonstrates the nitrate concentration from our sensor network from 4/29/2022 to 7/31/2022. The orange line is the calibrated nitrate concentration at the outlet measured by the nitrate sensor. The black dots represent the nitrate spot measurements from the inlet and the red dots represent the nitrate spot measurements from the outlet. The light pink lines demonstrate when carbon dosing occurred in the system. In the second carbon dosing we did, there was a sharp decrease in the outlet nitrate levels which demonstrates a proof of concept that carbon dosing is effective in our bioreactor. Also, the inlet nitrate levels remained high during that period demonstrating that there was nitrate coming into the system that was effectively being broken down. We then completed carbon dosing in shorter intervals which was also effective but didn’t result in as large of a decrease as we hoped. Between June 10th-19th, we drained the bioreactor since it was at low flow and we were preparing for more storm conditions. This resulted in an increase in outlet Br (light blue) which was used as an indicator of our carbon solution therefore some of our acetate solution had gotten stuck in the bioreactor and hadn’t fully flushed through. To counteract this in our next iteration of carbon pumping, we will flush water after the acetate to help it move through the bioreactor. By July, we had significantly lower flows then was effective for the bioreactor system as is seen by the dark blue line showing outlet water level. Therefore, we stopped carbon dosing and additional spot measurements since there was not a lot of new nitrate or runoff coming into the bioreactor. </p>
-									<div class="gallery">
-										<a target="_blank" href="images/results.jpg">
-										  <img src="images/results.jpg" alt="">
-										</a>
-										<div class="desc"><b>Figure 10: Graph of data from 4/29/22-7/31/22 of nitrate concentration by Zihao Zhang</div>
-									</div>
+									<figure>
+										<img src="images/results.jpg" alt="" />
+										<figcaption>Figure 10: Graph of data from 4/29/22-07/31/22 of nitrate conentration by Zihao Zhang</figcaption>
+									</figure>
+									
 									<h3>5. Conclusions & Future Plans</h3>
 									<p>Although we made a lot of important discoveries through the semester and summer, this is only the beginning of the plan for this project. The long-term vision for this research is to create a flexible blueprint for implementing IoT and real-time control methods in woodchip bioreactors to facilitate the uptake of these technological innovations among farmers. Although we have begun integrating the Arduino technology into our project to make it more cost-effective, we hope to replace the main Campbell Scientific CR100X controller with a Pololu 32U4 SV which reduces the cost significantly. In addition, I hope to integrate an IoT module with the Pololu board to make it more accessible and so we can make real time changes to the bioreactor from our lab. </p>
 									<p>I hope to help setup a open-source guide that would include the code, instruments, wiring and instructions on how to setup your own retrofitted bioreactor. The easy implementation of this emerging technology would help limit the export of high concentrations of reactive N to groundwater and surface water ecosystems, thereby reducing negative effects of overnitrification. </p>
