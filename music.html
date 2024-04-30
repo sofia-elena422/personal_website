@@ -55,18 +55,18 @@
 									<p>Then, based on multiple experiments conducted by other researchers (see references) we came up with a plan for making our signal conditioning system. The surface electrodes pick up EMG signals in the millivolt range and we wanted to determine the difference between the two working electrodes using the ground electrode as a reference. Then we needed to amplify and condition the signal so that the RP2040 could understand it later.</p>
 									<p>Using the two examples described in our background as starting points for our hardware, we worked with Bruce Land to come up with a good testing method using the oscilloscope and function generator before hooking it up to the electrodes and isolating the system. To simulate our EMG biological input of a few mV pulsing, we set the function generator to output a 1V sine wave and sent it through a voltage divider to have a 0.01 mV sine wave coming into our first opamp, the INA121. We decided to use the INA121 because it is a standard differential op amp that also has an amplification component so we figured it would be effective to determine the difference between the working electrodes. We also decided to power our system with the lab DC power source with a +/- 9V rail and a common ground. Then, to configure the INA121, we had to connect the positive and negative inputs from our voltage divider into the opamp, connect our +/- 9V rail to the V+ and V- components, add a reference ground which was connected to the power supply ground and function generator ground and include a gain resistor. We determined that a gain of 10 would be sufficient since we didn't want to amplify too much noise since we were not filtering the input signal before putting it in the opamp. To implement the gain of 10, we utilized a 5.1 kOhm resistor. Finally, to test that our opamp was working, we connected the oscilloscope to the output and measured it to ensure that it was conditioning the signal as expected. For our .01 mV sine wave input, we expected the output of the op-amp to look like a sine wave with an amplitude of around 0.1 mV because of the gain of 10. Below is a diagram of our first tester circuit as described above.</p>
 									<figure>
-										<img src="images/test_circuit_1.png" alt="" />
+										<img src="images/test_circuit_1.png" alt="first test circuit iteration" />
 										<figcaption>Test Circuit #1</figcaption>
 									</figure>
 									<p>When testing this first circuit, there were a couple of issues we ran into. First, we were getting strange outputs because the ground we connected to the op-amp was not connected throughout all the devices. In addition, when we were looking at the sine wave on the oscilloscope, there was a good amount of noise making the signal look fuzzy. To try to reduce the noise we were seeing, we wanted to implement a bandpass filter in our signal conditioning stage.</p>
 									<p>To start, we implemented a highpass filter after the INA 121 to try to remove some of the noise getting picked up from the signal acquisition. We utilized a capacitor-resistor combination to make a high-pass filter before passing it to our next op-amp, dual op-amp LM358. We used a 1 uF capacitor and 100 kOhm resistor to filter the lower frequency noise. Then we inputted the filtered output into the next op amp, an LM258 dual op-amp with 100 gain. We wanted to do 100 gain to have a system with 1000 gain overall to get it in the effective voltage range instead of 100 gain overall. We tested the system using the same method but with the oscilloscope at the output of the second op-amp.The circuit we tested is included in the figure below.</p>
 									<figure>
-										<img src="images/test_circuit_2.png" alt="" />
+										<img src="images/test_circuit_2.png" alt="second test circuit iteration" />
 										<figcaption>Test Circuit #2</figcaption>
 									</figure>
 									<p>The outputted waveform was in the 1V range since our system had a gain of 1000 at this point. The waveform outputted by the oscilloscope can be seen below.</p>
 									<figure>
-										<img src="images/oscilliscope.png" alt="" />
+										<img src="images/oscilliscope.png" alt="oscilloscope output of signal conditioning" />
 										<figcaption>Oscilloscope Output of Signal Conditioning Circuit</figcaption>
 									</figure>
 									<p>The next step in our hardware design was to implement the electrode system and give the system a floating ground to make it safe for testing on humans. We went through some trial and error to determine how to best read the signal being outputted by the signal conditioning system. We couldn't use the VGA, lab oscilloscope, lab monitors, or anything connected directly to ground.</p>
@@ -80,7 +80,7 @@
 									<p>Finally, we had to connect the VOUTB to the audio jack that will connect to the speaker. The configuration of these analog output pins is configured in our code and sent to the DAC through the LDAC pin. For our system, we utilized the VOUTB pin to output the correct voltage to configure for the correct frequency. The Markov model code would tell the DAC what note and at what frequency to output it using the FM synthesizer code. Then the output of the DAC was connected to an audio jack connected to a speaker to effectively produce sounds when the RP2040 asks. The circuit can be seen below.</p>
 
 									<figure>
-										<img src="images/audio_circuit.png" alt="" />
+										<img src="images/audio_circuit.png" alt="audio experimental circuit" />
 										<figcaption>Audio Circuit</figcaption>
 									</figure>
 
@@ -90,7 +90,7 @@
 									<p>We define the first GPIO keypad pin (GPIO9), the number of rows, and the number of keys for the scanning function. In the main() of our program, we initialize GPIOs 9, 10, 11, and 12 as outputs and GPIOs 13, 14, and 15 as inputs. We also turn on the internal pulldown resistors for the input pins as described above.</p>
 
 									<figure>
-										<img src="images/keypad_circuit.png" alt="" />
+										<img src="images/keypad_circuit.png" alt="keypad experimental circuit" />
 										<figcaption>Keypad Circuit</figcaption>
 									</figure>
 									
@@ -98,7 +98,7 @@
 									<h3>Markov Model Program</h3>
 									<p>We implemented two Markov models, one for choosing notes and one for choosing note lengths. The notes that the program can choose from range from middle C to A5. This range includes sharp notes as well, including A5 sharp. We chose this range because we wanted to stay in the treble clef and this range encompassed all of the notes we encountered in our music sheet training data. We store these notes as an array of 23 frequencies in Hz, sorted from lowest to highest. The note lengths that are available range from sixteenth notes to full notes, including dotted quarter notes and dotted half notes. We store these note lengths as an array of integers: 16, 12, 8, 6, 4, 2, 1. These represent the lengths as multipliers of sixteenth notes, so 16 represents a full note, 12 represents a dotted half note, 8 represents a half note, 6 represents a dotted quarter note, and so on. These are sorted from longest to shortest length.</p>
 									<figure>
-										<img src="images/notes.png" alt="" />
+										<img src="images/notes.png" alt="range of notes from middle C to A5" />
 										<figcaption>Range of notes from Middle C to A5</figcaption>
 									</figure>
 									<p>These Markov models are represented as matrices with probabilities for their entries. Each row represents a note/length, and each value on the row represents the probability of transitioning from the row's note/length to the column's note/length. In practice, we actually used matrices of the same row/column structure but instead stored cumulative probabilities (that sum to 1) for each row so that we could use an input value (in our project's case, the readings from the electrodes on the arm), normalize the value to be less than or equal to 1, and then see which note/length the model will transition to next.</p>
@@ -119,7 +119,7 @@
 									<h3>Keypad Program</h3>
 									<p>To implement button pressing, we had to use a finite state machine after scanning the keypad to ensure that for each button press, there is a change in instrument and that the microcontroller doesn’t detect multiple button presses each time you press or release a button. To prevent this, after each keypad scan was implemented, we check the state of the button pressing and see if we need to change states. We start in the not-pressed state and repeatedly scan the keypad for anything that is not a -1. If anything is returned on the i-value, then the state machine goes to the maybe-pressed state. After the thread scans the keypad again, if the possible value is the same as the i-value then it should transition into the pressed button state. In this transition, it will set the beeping to 1 which will enable the sound to be produced in the ISR. If the i-value doesn’t equal the possible value then it goes back to the not pressed state. During the transition from the maybe-pressed state to the pressed state, we change the instrument to the specified i-value if it is between 1-8. Once in the pressed state, if the i-value doesn’t equal the possible value when it moved to the pressed state then another button might be pressed or the current button was released and it moves to the maybe-not pressed state. Until either of those actions happen, it will remain in the pressed state. Finally, in the maybe-not pressed state if the i-value is just the same possible value then it should go back to the pressed state since the button wasn’t actually released. If any other i-value is returned, then it should go to the not pressed state. This finite state machine can be seen in the image below.</p>
 									<figure>
-										<img src="images/keypad_fsm.png" alt="" />
+										<img src="images/keypad_fsm.png" alt="keypad finite state machine" />
 										<figcaption>Keypad Button Pressing State Machine</figcaption>
 									</figure>
 
@@ -127,7 +127,7 @@
 									<p>Our final system included three electrodes connected to someone's skin (in our demonstration video it's Kidus) that creates a caroling beat that speeds up and goes higher when the user flexes their muscles. In addition, the user can change the instrument type using the keypad.</p>
 									<h3>Final Hardware Diagram</h3>
 									<figure>
-										<img src="images/final_hardware.png" alt="" />
+										<img src="images/final_hardware.png" alt="final hardware circuit diagram" />
 										<figcaption>Final Hardware Diagram</figcaption>
 									</figure>
 									<h3>Safety</h3>
@@ -147,14 +147,14 @@
 									<p><a href="https://pages.mtu.edu/~suits/notefreqs.html">Physics of Music-Notes</a></p>
 									<p><a href="https://www.ti.com/lit/ds/symlink/ina121.pdf?ts=1700234146755&ref_url=https%253A%252F%252Fwww.google.ca%252F">INA121 Datasheet</a></p>
 									<p>Sheet Music Training Data:</p>
-									<p><a href="https://www.8notes.com/scores/13800.asp"></a>Music Source 1</p>
-									<p><a href="https://www.8notes.com/scores/11339.asp"></a>Music Source 2</p>
-									<p><a href="https://www.8notes.com/scores/11338.asp"></a>Music Source 3</p>
-									<p><a href="https://www.8notes.com/scores/15318.asp"></a>Music Source 4</p>
-									<p><a href="https://www.8notes.com/scores/621.asp"></a>Music Source 5</p>
-									<p><a href="https://www.8notes.com/scores/13801.asp"></a>Music Source 6</p>
-									<p><a href="https://www.8notes.com/scores/23863.asp"></a>Music Source 7</p>
-									<p><a href="https://musescore.com/user/101118/scores/151348"></a>Music Source 8</p>
+									<p><a href="https://www.8notes.com/scores/13800.asp">Music Source 1</a></p>
+									<p><a href="https://www.8notes.com/scores/11339.asp">Music Source 2</a></p>
+									<p><a href="https://www.8notes.com/scores/11338.asp">Music Source 3</a></p>
+									<p><a href="https://www.8notes.com/scores/15318.asp">Music Source 4</a></p>
+									<p><a href="https://www.8notes.com/scores/621.asp">Music Source 5</a></p>
+									<p><a href="https://www.8notes.com/scores/13801.asp">Music Source 6</a></p>
+									<p><a href="https://www.8notes.com/scores/23863.asp">Music Source 7</a></p>
+									<p><a href="https://musescore.com/user/101118/scores/151348">Music Source 8</a></p>
 
 
 								</section>
